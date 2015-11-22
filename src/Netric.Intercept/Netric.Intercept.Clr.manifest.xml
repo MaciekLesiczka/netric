@@ -1,0 +1,52 @@
+<instrumentationManifest xmlns="http://schemas.microsoft.com/win/2004/08/events">
+ <instrumentation xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:win="http://manifests.microsoft.com/win/2004/08/windows/events">
+  <events xmlns="http://schemas.microsoft.com/win/2004/08/events">
+<provider name="Netric.Intercept.Clr" guid="{768eb926-20f5-5a90-1d4f-d54da661bd49}" resourceFileName="Netric.Intercept.Clr" messageFileName="Netric.Intercept.Clr" symbol="Netric_Intercept_Clr">
+ <tasks>
+  <task name="OnLeave" message="$(string.task_OnLeave)" value="65532"/>
+  <task name="OnEnter" message="$(string.task_OnEnter)" value="65533"/>
+  <task name="EventSourceMessage" message="$(string.task_EventSourceMessage)" value="65534"/>
+ </tasks>
+ <opcodes>
+ </opcodes>
+ <keywords>
+  <keyword name="Session3" message="$(string.keyword_Session3)" mask="0x100000000000"/>
+  <keyword name="Session2" message="$(string.keyword_Session2)" mask="0x200000000000"/>
+  <keyword name="Session1" message="$(string.keyword_Session1)" mask="0x400000000000"/>
+  <keyword name="Session0" message="$(string.keyword_Session0)" mask="0x800000000000"/>
+ </keywords>
+ <events>
+  <event value="0" version="0" level="win:LogAlways" symbol="EventSourceMessage" task="EventSourceMessage" template="EventSourceMessageArgs"/>
+  <event value="1" version="0" level="win:Informational" symbol="OnEnter" task="OnEnter" template="OnEnterArgs"/>
+  <event value="2" version="0" level="win:Informational" symbol="OnLeave" task="OnLeave" template="OnLeaveArgs"/>
+ </events>
+ <templates>
+  <template tid="EventSourceMessageArgs">
+   <data name="message" inType="win:UnicodeString"/>
+  </template>
+  <template tid="OnEnterArgs">
+   <data name="Method" inType="win:UnicodeString"/>
+   <data name="CallId" inType="win:Int64"/>
+  </template>
+  <template tid="OnLeaveArgs">
+   <data name="Method" inType="win:UnicodeString"/>
+   <data name="CallId" inType="win:Int64"/>
+  </template>
+ </templates>
+</provider>
+</events>
+</instrumentation>
+<localization>
+ <resources culture="pl-PL">
+  <stringTable>
+   <string id="keyword_Session0" value="Session0"/>
+   <string id="keyword_Session1" value="Session1"/>
+   <string id="keyword_Session2" value="Session2"/>
+   <string id="keyword_Session3" value="Session3"/>
+   <string id="task_EventSourceMessage" value="EventSourceMessage"/>
+   <string id="task_OnEnter" value="OnEnter"/>
+   <string id="task_OnLeave" value="OnLeave"/>
+  </stringTable>
+ </resources>
+</localization>
+</instrumentationManifest>

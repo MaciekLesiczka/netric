@@ -229,3 +229,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# netric specific
+.fake/**
+build/**
+test/**
