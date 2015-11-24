@@ -23,6 +23,12 @@ Target "BuildApp" (fun _ ->
       |> CopyFiles buildDir
 )
 
+Target "RestorePackages" (fun _ -> 
+     "./src/Netric.sln"
+     |> RestoreMSSolutionPackages (fun p ->
+         { p with Retries = 4 })
+ )
+
 Target "BuildTest" (fun _ ->
     MSBuildDebug testDir "Build" testProjects
         |> Log "TestBuild-Output: "
@@ -43,6 +49,7 @@ Target "Default" (fun _ ->
 )
 
 "Clean" 
+    ==> "RestorePackages"
     ==> "BuildApp"  
     ==> "BuildTest"
     ==> "RunTests"
