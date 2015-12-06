@@ -9,6 +9,9 @@ let appProjects =
     ++ "src/**/Netric.Configuration.Console.csproj"
     ++ "src/**/Netric.Intercept.csproj"
 let testProjects = !! "src/**/*.Tests.csproj"
+
+let installerProject = !!"src/Netric.Installer/Netric.Installer.wixproj"
+
 let version = "1.0.0.0"
 
 Target "Clean" (fun _ ->
@@ -37,6 +40,15 @@ Target "BuildTest" (fun _ ->
         |> Log "TestBuild-Output: "
 )
 
+Target "BuildInstaller" (fun _ ->    
+    let buildOnPlatform platform = 
+        MSBuildReleaseExt buildDir ["Platform",platform] "Build" installerProject 
+            |> Log "InstallerBuild-Output: "
+        ()
+    buildOnPlatform "x86"
+    buildOnPlatform "x64"    
+)
+
 open Fake.Testing
 Target "RunTests" (fun _ ->  
     !! (testDir + "/*.Tests.dll")
@@ -56,6 +68,10 @@ Target "Default" (fun _ ->
     ==> "BuildApp"  
     ==> "BuildTest"
     ==> "RunTests"
+    ==> "Default"
+
+"BuildApp"     
+    =?> ("BuildInstaller",hasBuildParam "installer")
     ==> "Default"
 
 RunTargetOrDefault "Default"
