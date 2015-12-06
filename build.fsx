@@ -7,6 +7,7 @@ let testDir = "./test/"
 let appProjects = 
     !! "src/**/Netric.Agent.Service.csproj"
     ++ "src/**/Netric.Configuration.Console.csproj"
+    ++ "src/**/Netric.Intercept.csproj"
 let testProjects = !! "src/**/*.Tests.csproj"
 let version = "1.0.0.0"
 
