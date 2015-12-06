@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
+     xmlns:netfx="http://schemas.microsoft.com/wix/NetFxExtension">
+  <!--todo: add action to uninstall handlers and modules in all sites-->
+	<Product Id="*" Name="Netric $(var.Architecture)" Language="1033" Version="1.0.0.0" Manufacturer="Maciej Lesiczka" UpgradeCode="D99D8A88-2A9D-4C7A-BB68-86514A365056">
+		<Package InstallerVersion="405" Compressed="yes" InstallScope="perMachine" />    
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <Media Id="1" Cabinet="product.cab" EmbedCab="yes"/>    
+    <Feature Id="ProductFeature" Title="Netric" Level="1">      		
+      <ComponentRef Id="InterceptAssembly"/>
+      <ComponentRef Id="EventSourceAssembly"/>
+      <ComponentRef Id="ProfilerComponent"/>    
+      <ComponentRef Id="ProfilerRegistryEntries"/>
+    </Feature>
+    <Feature Id="VCRedist" Title="Visual C++ 2013 Runtime" AllowAdvertise="no" Display="hidden" Level="1">
+      <MergeRef Id="MSVCRedist"/>
+    </Feature>
+    
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER" />    
+    <UIRef Id="WixUI_Minimal" />
+	</Product>
+  <Fragment>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">      
+          <Directory Id="GAC" Name="GAC">
+            <Component Id="InterceptAssembly" Guid="5871FC33-BEF7-4477-B501-1DE71B23D2E3">             
+              <File Id="Netric.Intercept.dll"                                         
+                    Name="Netric.Intercept.dll"
+                    KeyPath="yes"
+                    Source="$(var.BuildPath)\Netric.Intercept.dll" 
+                    Assembly=".net" ></File>   
+            </Component>
+
+            <Component Id="EventSourceAssembly" Guid="68A2168D-0457-4572-8B52-D39C9906EBAD">
+              <File Id="Microsoft.Diagnostics.Tracing.EventSource.dll"
+                    Name="Microsoft.Diagnostics.Tracing.EventSource.dll"
+                    KeyPath="yes"
+                    Source="$(var.BuildPath)\Microsoft.Diagnostics.Tracing.EventSource.dll"
+                    Assembly=".net"></File>
+            </Component>
+
+          </Directory>                              
+          <Directory Id="PROFILERINSTALLFOLDER" Name="Profiler">
+            <Component Id="ProfilerComponent" Guid="E7C46182-AD07-4522-9535-7AE484F23CB7">
+              <File Id="$(var.ProfilerFile)" Source="$(var.BuildPath)\$(var.ProfilerFile)">
+                <Class Id="8CD545A9-31D0-453A-BF50-127212D67116" Context="InprocServer32" ThreadingModel="both" Description="Netrica CLR Profiler Server">
+                  <ProgId Id="Netric.Profiler.1" Description="Netric CLR Profiler $(var.Architecture)">
+                    <ProgId Id="Netric.Profiler" Description="Netric CLR Profiler $(var.Architecture)" />
+                  </ProgId>
+                </Class>                
+              </File>             
+            </Component>
+          </Directory>                  
+    </Directory>
+    
+    <DirectoryRef Id="TARGETDIR">
+      <Merge Id="MSVCRedist" SourceFile="c:\Program Files (x86)\Common Files\Merge Modules\$(var.CppModule)" Language="0" DiskId="1" />
+    </DirectoryRef>
+
+    <DirectoryRef Id="TARGETDIR">      
+      <Component Id="ProfilerRegistryEntries">        
+        <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\W3SVC">
+          <RegistryValue Type="multiString" Name="Environment">
+            <MultiStringValue>PROFILED_ASSEMBLY=none</MultiStringValue>
+            <MultiStringValue>COR_ENABLE_PROFILING=1</MultiStringValue>
+            <MultiStringValue>COMPLUS_ProfAPI_ProfilerCompatibilitySetting=EnableV2Profiler</MultiStringValue>
+            <MultiStringValue>COMPLUS_LoaderOptimization=1</MultiStringValue>
+            <MultiStringValue>COR_PROFILER={8CD545A9-31D0-453A-BF50-127212D67116}</MultiStringValue>                        
+          </RegistryValue>
+        </RegistryKey>
+        <RegistryKey Root="HKLM" Key="SYSTEM\CurrentControlSet\Services\WAS">
+          <RegistryValue Type="multiString" Name="Environment" KeyPath="yes">
+            <MultiStringValue>PROFILED_ASSEMBLY=none</MultiStringValue>
+            <MultiStringValue>COR_ENABLE_PROFILING=1</MultiStringValue>
+            <MultiStringValue>COMPLUS_ProfAPI_ProfilerCompatibilitySetting=EnableV2Profiler</MultiStringValue>
+            <MultiStringValue>COMPLUS_LoaderOptimization=1</MultiStringValue>
+            <MultiStringValue>COR_PROFILER={8CD545A9-31D0-453A-BF50-127212D67116}</MultiStringValue>
+          </RegistryValue>
+        </RegistryKey>
+      </Component>
+    </DirectoryRef>    
+  </Fragment> 
+</Wix>
