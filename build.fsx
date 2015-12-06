@@ -26,7 +26,9 @@ Target "BuildApp" (fun _ ->
 Target "RestorePackages" (fun _ -> 
      "./src/Netric.sln"
      |> RestoreMSSolutionPackages (fun p ->
-         { p with Retries = 4 })
+         { p with Retries = 4
+                  OutputPath = "src/packages"
+             })
  )
 
 Target "BuildTest" (fun _ ->
