@@ -1,6 +1,7 @@
 ﻿#r @"src/packages/FAKE/tools/fakelib.dll"
 
 open Fake
+open System
 let buildDir = "./build/"
 let testDir = "./test/"
 
@@ -42,7 +43,7 @@ Target "BuildTest" (fun _ ->
 
 Target "BuildInstaller" (fun _ ->    
     let buildOnPlatform platform = 
-        MSBuildReleaseExt buildDir ["Platform",platform] "Build" installerProject 
+        MSBuildReleaseExt buildDir [("Platform",platform);("PackagesPath",Environment.CurrentDirectory @@ "/src/packages/")] "Build" installerProject 
             |> Log "InstallerBuild-Output: "
         ()
     buildOnPlatform "x86"
@@ -64,14 +65,11 @@ Target "Default" (fun _ ->
 )
 
 "Clean" 
-    ==> "RestorePackages"
-    ==> "BuildApp"  
+    ==> "RestorePackages"    
+    ==> "BuildApp"      
     ==> "BuildTest"
     ==> "RunTests"
-    ==> "Default"
-
-"BuildApp"     
-    =?> ("BuildInstaller",hasBuildParam "installer")
+    ==> "BuildInstaller"
     ==> "Default"
 
 RunTargetOrDefault "Default"
