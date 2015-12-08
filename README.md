@@ -5,7 +5,7 @@ Flame Graphs for ASP.NET requests.
 Run following command in root directory:
 
 ```
-build.cmd
+build.bat
 ```
 
 
