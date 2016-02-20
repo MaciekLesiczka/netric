@@ -1,4 +1,6 @@
 # netric
+
+[![Join the chat at https://gitter.im/MaciekLesiczka/netric](https://badges.gitter.im/MaciekLesiczka/netric.svg)](https://gitter.im/MaciekLesiczka/netric?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Web-based tool for profiling ASP.NET applications. Aim of this project is to create lightweight profiling/monitoring tool with minimal overhead. 
 
 ## Why netric
