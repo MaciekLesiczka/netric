@@ -36,11 +36,11 @@
   </PropertyGroup>  
   <PropertyGroup Condition=" '$(Platform)' == 'x64' ">
     <OutputName>Netric_x64</OutputName>
-    <DefineConstants>BuildPath=$(BuildPath);ProfilerFile=Netric.Profiler.dll;Architecture=x64;CppModule=Microsoft_VC120_CRT_x64.msm</DefineConstants>
+    <DefineConstants>BuildPath=$(BuildPath);ProfilerFile=Netric.Profiler.dll;Architecture=x64;CppModule=Microsoft_VC140_CRT_x64.msm</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'x86' ">
     <OutputName>Netric_x86</OutputName>
-    <DefineConstants>BuildPath=$(BuildPath);ProfilerFile=Netric.Profiler32.dll;Architecture=x86;CppModule=Microsoft_VC120_CRT_x86.msm</DefineConstants>
+    <DefineConstants>BuildPath=$(BuildPath);ProfilerFile=Netric.Profiler32.dll;Architecture=x86;CppModule=Microsoft_VC140_CRT_x86.msm</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
