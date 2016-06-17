@@ -9,6 +9,12 @@ Web-based tool for profiling ASP.NET applications. Aim of this project is to cre
 
 
 ## How to profile ASP.NET application on IIS in 3 steps
+
+### Prerequisites:
+
+- .NET 4.5
+- [Visual C++ 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
+
 1. __Download, unzip the [release](https://github.com/MaciekLesiczka/netric/releases/tag/v0.1-alpha) and install *Netric_x86/x64.msi*__. Choose x86 if you have 32-bit system or if application pool of profiled site has "Enable 32-bit applications" flag set to true.
 2. **Choose the site to profile**
     1. Go to downloaded release folder and run
@@ -32,6 +38,8 @@ Web-based tool for profiling ASP.NET applications. Aim of this project is to cre
 
 ## How does it work
 Main task for the tool is to gather method execution times from profiled ASP.NET apps and generate Flame Graph for every request. Methods are instrumented on runtime via ICorProfiler API. All metrics are sent through custom ETWs to the separate process which generates SVG charts and stores them on file system.
+
+
 
 ## How to build it
 
