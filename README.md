@@ -1,4 +1,7 @@
 # netric
+
+[![Build status](https://ci.appveyor.com/api/projects/status/0dwf4jdler4eodil/branch/master?svg=true)](https://ci.appveyor.com/project/MaciekLesiczka/netric/branch/master)
+
 Web-based tool for profiling ASP.NET applications. Aim of this project is to create lightweight profiling/monitoring tool with minimal overhead. 
 
 ## Why netric
