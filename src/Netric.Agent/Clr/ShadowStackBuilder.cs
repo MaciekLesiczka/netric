@@ -52,15 +52,5 @@ namespace Netric.Agent.Clr
 
             return result;
         }
-
-        public void Trace(IMethodEnter methodEnter)
-        {
-            TraceEnter(methodEnter);
-        }
-
-        public MethodStats Trace(IMethodLeave clrEvent)
-        {
-            return TraceLeave(clrEvent);
-        }
     }
 }

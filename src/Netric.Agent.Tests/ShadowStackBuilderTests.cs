@@ -38,14 +38,14 @@ namespace Netric.Agent.Tests
             var target = new ShadowStackBuilder();
 
             //act
-            target.Trace(clr1Call1);
-            target.Trace(clr1Call2);
-            target.Trace(clr1Call3);
-            target.Trace(clr2Call3);
-            target.Trace(clr1Call4);
-            target.Trace(clr2Call4);
-            var result = target.Trace(clr2Call2);
-            target.Trace(clr2Call1);
+            target.TraceEnter(clr1Call1);
+            target.TraceEnter(clr1Call2);
+            target.TraceEnter(clr1Call3);
+            target.TraceLeave(clr2Call3);
+            target.TraceEnter(clr1Call4);
+            target.TraceLeave(clr2Call4);
+            var result = target.TraceLeave(clr2Call2);
+            target.TraceLeave(clr2Call1);
 
             //assert
             Assert.Equal(13, result.ElapsedInclusive);
@@ -67,14 +67,14 @@ namespace Netric.Agent.Tests
             var target = new ShadowStackBuilder();
 
             //act
-            target.Trace(clr1Call1);
-            target.Trace(clr1Call2);
-            target.Trace(clr1Call3);
-            target.Trace(clr2Call3);
-            target.Trace(clr1Call4);
-           var result4 = target.Trace(clr2Call4);
-           var result2 = target.Trace(clr2Call2);
-           var result1 = target.Trace(clr2Call1);
+            target.TraceEnter(clr1Call1);
+            target.TraceEnter(clr1Call2);
+            target.TraceEnter(clr1Call3);
+            target.TraceLeave(clr2Call3);
+            target.TraceEnter(clr1Call4);
+           var result4 = target.TraceLeave(clr2Call4);
+           var result2 = target.TraceLeave(clr2Call2);
+           var result1 = target.TraceLeave(clr2Call1);
 
             //assert
             Assert.Equal(9, result2.ElapsedExclusive);
@@ -98,14 +98,14 @@ namespace Netric.Agent.Tests
             var target = new ShadowStackBuilder();
 
             //act
-            target.Trace(clr1Call1);
-            target.Trace(clr1Call2);
-            target.Trace(clr1Call3);
-            var result3 = target.Trace(clr2Call3);
-            target.Trace(clr1Call4);
-            var result4 = target.Trace(clr2Call4);
-            var result2 = target.Trace(clr2Call2);
-            var result1 = target.Trace(clr2Call1);
+            target.TraceEnter(clr1Call1);
+            target.TraceEnter(clr1Call2);
+            target.TraceEnter(clr1Call3);
+            var result3 = target.TraceLeave(clr2Call3);
+            target.TraceEnter(clr1Call4);
+            var result4 = target.TraceLeave(clr2Call4);
+            var result2 = target.TraceLeave(clr2Call2);
+            var result1 = target.TraceLeave(clr2Call1);
 
             //assert
             Assert.Equal(2, result3.StackLevel);
@@ -130,14 +130,14 @@ namespace Netric.Agent.Tests
             var target = new ShadowStackBuilder();
 
             //act
-            target.Trace(clr1Call1);
-            target.Trace(clr1Call2);
-            target.Trace(clr1Call3);
+            target.TraceEnter(clr1Call1);
+            target.TraceEnter(clr1Call2);
+            target.TraceEnter(clr1Call3);
 
-            target.Trace(clr1Call4);
-           var result4 = target.Trace(clr2Call4);
-           var result2 = target.Trace(clr2Call2);
-           var result1 = target.Trace(clr2Call1);
+            target.TraceEnter(clr1Call4);
+           var result4 = target.TraceLeave(clr2Call4);
+           var result2 = target.TraceLeave(clr2Call2);
+           var result1 = target.TraceLeave(clr2Call1);
 
             //assert
             Assert.Equal(3, result4.StackLevel);//we dont know if 4 was called by 2 or by 3
@@ -163,13 +163,13 @@ namespace Netric.Agent.Tests
             var target = new ShadowStackBuilder();
 
             //act
-            target.Trace(clr1Call1);
-            target.Trace(clr1Call2);
-            target.Trace(clr1Call3);
+            target.TraceEnter(clr1Call1);
+            target.TraceEnter(clr1Call2);
+            target.TraceEnter(clr1Call3);
 
-            target.Trace(clr1Call4);
-            var result4 = target.Trace(clr2Call4);
-            var result1 = target.Trace(clr2Call1);
+            target.TraceEnter(clr1Call4);
+            var result4 = target.TraceLeave(clr2Call4);
+            var result1 = target.TraceLeave(clr2Call1);
 
             //assert
             Assert.Equal(3, result4.StackLevel);
@@ -193,14 +193,14 @@ namespace Netric.Agent.Tests
             var target = new ShadowStackBuilder();
 
             //act
-            target.Trace(clr1Call1);
-            target.Trace(clr1Call2);
-            target.Trace(clr1Call3);
+            target.TraceEnter(clr1Call1);
+            target.TraceEnter(clr1Call2);
+            target.TraceEnter(clr1Call3);
             //target.Trace(clr2Call3);
-            target.Trace(clr1Call4);
-            var result4 = target.Trace(clr2Call4);
-            var result2 = target.Trace(clr2Call2);
-            var result1 = target.Trace(clr2Call1);
+            target.TraceEnter(clr1Call4);
+            var result4 = target.TraceLeave(clr2Call4);
+            var result2 = target.TraceLeave(clr2Call2);
+            var result1 = target.TraceLeave(clr2Call1);
 
             //assert           
             Assert.Null(result2.ElapsedExclusive); //we dont have full stack information.Unable calculate Exclusive time and it is left null
