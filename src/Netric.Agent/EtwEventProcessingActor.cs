@@ -4,11 +4,11 @@ using System.Linq;
 using Akka.Actor;
 using Microsoft.Diagnostics.Tracing;
 using Microsoft.Diagnostics.Tracing.Parsers.NetricInterceptClr;
-using Microsoft.Diagnostics.Tracing.Parsers.NetricInterceptWebNavigationTiming;
 using Microsoft.Diagnostics.Tracing.Parsers.NetricInterceptWebRequest;
 using Netric.Agent.Clr;
 using Netric.Shared;
 using Netric.Shared.Clr;
+using NLog;
 
 namespace Netric.Agent
 {
@@ -17,17 +17,18 @@ namespace Netric.Agent
     /// </summary>
     public class EtwEventProcessingActor : ReceiveActor
     {
-        private readonly IActorRef _requestStatsConsumer;
+        private static readonly ILogger Logger = LogManager.GetCurrentClassLogger();
+
+        private readonly IActorRef _requestStatsConsumer;        
         readonly Dictionary<ThreadInfo, RequestBegin> _currentRequests = new Dictionary<ThreadInfo, RequestBegin>();
         
         readonly Dictionary<ThreadInfo,RequestCallStack> _currentCallstacks = new Dictionary<ThreadInfo, RequestCallStack>();
 
         public EtwEventProcessingActor(IActorRef requestStatsConsumer)
         {
-            _requestStatsConsumer = requestStatsConsumer;
+            _requestStatsConsumer = requestStatsConsumer;            
             Receive<MethodEnter>(x => OnMethodEnter(x));
-            Receive<MethodLeave>(x => OnMethodLeave(x));
-            Receive<StatisticsArgs>(x=>OnStatistics(x));
+            Receive<MethodLeave>(x => OnMethodLeave(x));            
             Receive<RequestBegin>(x => OnRequestBegin(x));
             Receive<RequestEnd>(x => OnRequestEnd(x));
         }
@@ -37,30 +38,34 @@ namespace Netric.Agent
             if (_currentCallstacks.ContainsKey(args.Thread))
             {
                 _currentCallstacks[args.Thread].RegisterMethodEnter(args);
-                Console.WriteLine("Enter:{0}", args.Name);    
-            }            
+                Logger.Trace("Enter:{0}", args.Name);
+            }
         }
 
         private void OnMethodLeave(MethodLeave args)
         {
             if (_currentCallstacks.ContainsKey(args.Thread))
             {
-                _currentCallstacks[args.Thread].RegisterMethodLeave(args);
-                Console.WriteLine("Leave:{0}", args.CallId);
+                _currentCallstacks[args.Thread].RegisterMethodLeave(args);                
+                Logger.Trace("Leave:{0}", args.Name);
             }            
         }
-
-        private void OnStatistics(StatisticsArgs stat)
-        {
-        }
-
+        
         private void OnRequestBegin(RequestBegin args)
-        {
-            //todo: log warning if request is already registered in this thread
+        {            
+            EnsureBeginUniqueCall(args);
             _currentRequests[args.Thread] = args;
             _currentCallstacks[args.Thread] = new RequestCallStack();
 
-            Console.WriteLine("BEGIN:-------------------->{1}{0}", args.Url, args.Thread);
+            Logger.Trace("BEGIN Request {1}{0}", args.Url, args.Thread);            
+        }
+
+        private void EnsureBeginUniqueCall(RequestBegin args)
+        {
+            if (_currentRequests.ContainsKey(args.Thread) && _currentRequests[args.Thread].Id == args.Id)
+            {
+                throw new InvalidOperationException(string.Format("Request with id = {0} already begun.", args.Id));
+            }
         }
 
         private void OnRequestEnd(RequestEnd args)
@@ -69,14 +74,14 @@ namespace Netric.Agent
             {
                 if (_currentRequests[args.Thread].Id == args.Id)
                 {
-                    Console.WriteLine("End:-------------------->{1}{0}", _currentRequests[args.Thread].Url, args.Thread);
+                    Logger.Trace("END Request {1}{0}", _currentRequests[args.Thread].Url, args.Thread);
                     var request = CreateRequestStats(_currentRequests[args.Thread],args);
                     _requestStatsConsumer.Tell(request);
                     _currentRequests.Remove(args.Thread);                    
                 }
                 else
-                {
-                    //todo report problem
+                {                    
+                    Logger.Warn("Current Thread with id = {0} is handling different request. Expected: {1}, actual: {2}", args.Thread.ThreadId, args.Id, _currentRequests[args.Thread].Id);
                 }
             }            
         }
