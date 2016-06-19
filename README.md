@@ -12,9 +12,6 @@ Web-based tool for profiling ASP.NET applications. Aim of this project is to cre
 
 ### Prerequisites:
 
-- .NET 4.5
-- [Visual C++ 2015](https://www.microsoft.com/en-us/download/details.aspx?id=48145)
-
 1. __Download, unzip the [release](https://github.com/MaciekLesiczka/netric/releases/tag/v0.1-alpha) and install *Netric_x86/x64.msi*__. Choose x86 if you have 32-bit system or if application pool of profiled site has "Enable 32-bit applications" flag set to true.
 2. **Choose the site to profile**
     1. Go to downloaded release folder and run
