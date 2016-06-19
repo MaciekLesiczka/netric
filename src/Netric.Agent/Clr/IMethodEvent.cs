@@ -1,6 +1,6 @@
 namespace Netric.Agent.Clr
 {
-    public interface IMethodEnter
+    public interface IMethodEvent
     {
         string Name { get; }
         long CallId { get; }

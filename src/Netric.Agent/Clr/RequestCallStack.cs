@@ -15,7 +15,7 @@ namespace Netric.Agent.Clr
         private readonly ShadowStackBuilder _shadowStackBuilder = new ShadowStackBuilder();
         private long _lastMethodCall = -1;
 
-        public void RegisterMethodEnter(IMethodEnter methodEnter)
+        public void RegisterMethodEnter(IMethodEvent methodEnter)
         {            
             if (methodEnter.CallId < 0)
             {
@@ -31,7 +31,7 @@ namespace Netric.Agent.Clr
             _shadowStackBuilder.TraceEnter(methodEnter);
         }
 
-        public void RegisterMethodLeave(IMethodLeave methodLeave)
+        public void RegisterMethodLeave(IMethodEvent methodLeave)
         {
             var stats = _shadowStackBuilder.TraceLeave(methodLeave);
             _methodDicitonary[methodLeave.CallId] = new Method(methodLeave.Name,stats);

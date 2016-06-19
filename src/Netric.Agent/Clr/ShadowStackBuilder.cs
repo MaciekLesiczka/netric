@@ -14,7 +14,7 @@ namespace Netric.Agent.Clr
 
         private readonly Dictionary<ThreadInfo, Stack<CallToken>> _stackLevels = new Dictionary<ThreadInfo, Stack<CallToken>>();
 
-        public void TraceEnter(IMethodEnter methodEnter)
+        public void TraceEnter(IMethodEvent methodEnter)
         {
             if (!_stackLevels.ContainsKey(methodEnter.Thread))
             {
@@ -23,7 +23,7 @@ namespace Netric.Agent.Clr
             _stackLevels[methodEnter.Thread].Push(new CallToken() { TicksTime = methodEnter.Ticks, Id = methodEnter.CallId });
         }
 
-        public MethodStats TraceLeave(IMethodLeave clrEvent)
+        public MethodStats TraceLeave(IMethodEvent clrEvent)
         {
             
             var stack = _stackLevels[clrEvent.Thread];

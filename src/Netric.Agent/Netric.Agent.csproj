@@ -63,8 +63,7 @@
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Clr\IMethodEnter.cs" />
-    <Compile Include="Clr\IMethodLeave.cs" />
+    <Compile Include="Clr\IMethodEvent.cs" />
     <Compile Include="Clr\RequestCallStack.cs" />
     <Compile Include="Clr\ShadowStackBuilder.cs" />
     <Compile Include="EventParsers\Netric.Intercept.Clr.cs" />

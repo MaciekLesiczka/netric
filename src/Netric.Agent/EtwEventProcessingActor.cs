@@ -165,13 +165,13 @@ namespace Netric.Agent
             }
         }
 
-        public class MethodEvent : ProfileeEvent
+        public class MethodEvent : ProfileeEvent, IMethodEvent
         {
             private readonly string _name;
             private readonly long _callId;
             private readonly long _ticks;
 
-            public MethodEvent(string name,long callId,TraceEvent traceEvent)
+            protected MethodEvent(string name,long callId,TraceEvent traceEvent)
                 : base(traceEvent)
             {
                 _name = name;
@@ -195,16 +195,15 @@ namespace Netric.Agent
             }
         }
 
-        public class MethodEnter : MethodEvent, IMethodEnter
+        public class MethodEnter : MethodEvent
         {
             public MethodEnter(OnEnterArgs args)
                 : base(args.Method,args.CallId, args)
             {
-                
             }
         }
 
-        public class MethodLeave : MethodEvent, IMethodLeave
+        public class MethodLeave : MethodEvent
         {
             public MethodLeave(OnLeaveArgs args)
                 : base(args.Method,args.CallId, args)
