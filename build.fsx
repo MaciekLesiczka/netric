@@ -13,8 +13,6 @@ let testProjects = !! "src/**/*.Tests.csproj"
 
 let installerProject = !!"src/Netric.Installer/Netric.Installer.wixproj"
 
-let version = "1.0.0.0"
-
 Target "Clean" (fun _ ->
     CleanDir buildDir
     CleanDir testDir
