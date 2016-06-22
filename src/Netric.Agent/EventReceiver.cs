@@ -18,18 +18,14 @@ namespace Netric.Agent
         {
             using (var session = new TraceEventSession("netric"))
             {
-                session.EnableProvider(NetricInterceptWebRequestTraceEventParser.ProviderName);
-                session.EnableProvider(NetricInterceptWebNavigationTimingTraceEventParser.ProviderName);
+                session.EnableProvider(NetricInterceptWebRequestTraceEventParser.ProviderName);                
                 session.EnableProvider(NetricInterceptClrTraceEventParser.ProviderName);
 
                 using (var source = new ETWTraceEventSource("netric", TraceEventSourceType.Session))
                 {
                     var requestTraceEventParser = new NetricInterceptWebRequestTraceEventParser(source);
                     requestTraceEventParser.OnBegin+= x => _receiverActor.Tell(new EtwEventProcessingActor.RequestBegin(x));
-                    requestTraceEventParser.OnEnd += x => _receiverActor.Tell(new EtwEventProcessingActor.RequestEnd(x));
-
-                    var navigationTimingTraceEventParser = new NetricInterceptWebNavigationTimingTraceEventParser(source);
-                    navigationTimingTraceEventParser.Statistics += x => _receiverActor.Tell(x);
+                    requestTraceEventParser.OnEnd += x => _receiverActor.Tell(new EtwEventProcessingActor.RequestEnd(x));                    
 
                     var clrTraceEventParser = new NetricInterceptClrTraceEventParser(source);
                     clrTraceEventParser.OnEnter += x => _receiverActor.Tell(new EtwEventProcessingActor.MethodEnter(x));

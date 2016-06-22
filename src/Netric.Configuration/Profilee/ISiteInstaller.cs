@@ -57,17 +57,11 @@ namespace Netric.Configuration.Profilee
             try
             {
                 var modulesCollection = GetCollection("system.webServer/modules", siteName);
-    #if FULL_VERSION
-                var handlersCollection = GetCollection("system.webServer/handlers", siteName);
-#endif
+    
                 Func<ConfigurationElementCollection, bool> isInstalled = coll => coll.Any(configurationElement =>
                     configurationElement.Attributes["name"].Value.Equals(ElementName));
                 
-                return 
-#if FULL_VERSION
-                    isInstalled(handlersCollection) && 
-#endif
-                    isInstalled(modulesCollection);
+                return isInstalled(modulesCollection);
             }
             //todo handle FileNotFoundException
             catch (Exception ex)
@@ -78,12 +72,8 @@ namespace Netric.Configuration.Profilee
                     LogTrace( string.Format("Cannot read configuration of site {0}. {1}", siteName, ex.Message));
                     return false;
                 }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
-
         }
 
         public void Install(string siteName)
@@ -99,9 +89,6 @@ namespace Netric.Configuration.Profilee
                 }
                 else
                 {
-#if FULL_VERSION
-                    AddHandler(siteName);
-#endif
                     AddModule(siteName);
                     _manager.CommitChanges();
                 }
@@ -125,9 +112,6 @@ namespace Netric.Configuration.Profilee
             try
             {
                 RemoveFrom("system.webServer/modules", siteName, "Module");
-#if FULL_VERSION                
-                RemoveFrom("system.webServer/handlers", siteName, "Handler");
-#endif
                 _manager.CommitChanges();
                 Log("Profiling was removed. To apply changes, please recycle application pool");
             }
@@ -207,32 +191,6 @@ namespace Netric.Configuration.Profilee
                 "Netric.Intercept, Version={0}, Culture=neutral, PublicKeyToken=4D5ABCE15D499C91",
                 Assembly.GetExecutingAssembly().GetName().Version);
         }
-#if FULL_VERSION
-        private void AddHandler(string siteName)
-        {                        
-            var collection = GetCollection("system.webServer/handlers",siteName);
-
-            var element =
-                collection.FirstOrDefault(
-                    configurationElement => configurationElement.Attributes["name"].Value.Equals(ElementName));
-
-            var isNew = element == null;
-            if (isNew)
-            {
-                element = collection.CreateElement("add");
-                element["name"] = ElementName;
-            }
-
-            element["path"] = @"netrica.axd";
-            element["verb"] = @"GET";
-
-            element["type"] = string.Format(@"Netrica.Apm.Intercept.Web.HttpHandler, {0}", GetAssemblyNameString());
-            if (isNew)
-            {
-                collection.AddAt(0, element);
-            }
-        }
-#endif
 
         public void Dispose()
         {
