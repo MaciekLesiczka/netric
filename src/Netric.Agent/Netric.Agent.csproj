@@ -67,7 +67,6 @@
     <Compile Include="Clr\RequestCallStack.cs" />
     <Compile Include="Clr\ShadowStackBuilder.cs" />
     <Compile Include="EventParsers\Netric.Intercept.Clr.cs" />
-    <Compile Include="EventParsers\Netric.Intercept.Web.NavigationTiming.cs" />
     <Compile Include="EventReceiver.cs" />
     <Compile Include="EventParsers\Netric.Intercept.Web.Request.cs" />
     <Compile Include="EtwEventProcessingActor.cs" />

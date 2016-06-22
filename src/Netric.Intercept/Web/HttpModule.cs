@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
 
@@ -8,47 +6,11 @@ namespace Netric.Intercept.Web
 {
     public class HttpModule : IHttpModule
     {
-
-        private static string _snippetText;
-
         public void Init(HttpApplication context)
         {
             
             context.BeginRequest += ContextBeginRequest;
             context.EndRequest += ContextEndRequest;
-
-            context.PostReleaseRequestState += PostReleaseRequestState;
-            _snippetText = GetSnippetText();
-        }
-
-        private string GetSnippetText()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            const string resourceName = "Netric.Intercept.loadscript.html";
-
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
-            using (var reader = new StreamReader(stream))
-            {
-                return reader.ReadToEnd();
-            }
-        }
-
-        private void PostReleaseRequestState(object sender, EventArgs e)
-        {
-            var application = (HttpApplication)sender;
-            var context = application.Context;
-
-            var response = context.Response;
-            if (response.ContentType == "text/html")
-            {
-                Guid id;
-                if (TryGetGuid(application, out id))
-                {
-                    response.Filter = new PreBodyTagFilter(_snippetText.Replace("GUID", id.ToString()), response.Filter, response.ContentEncoding, context.Request != null ? context.Request.RawUrl : null
-                        //, Logger
-                    );    
-                }                
-            }
         }
 
         public void Dispose()
