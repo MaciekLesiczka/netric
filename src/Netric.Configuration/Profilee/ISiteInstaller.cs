@@ -8,8 +8,8 @@ namespace Netric.Configuration.Profilee
 {
     public interface ISiteInstaller
     {
-        string GetAllSites();
-        string[] GetSitesWithInstalledApm();
+        List<string> GetAllSites();
+        List<string> GetSitesWithInstalledApm();
         /// <summary>
         /// Adds handler and module web.config site. If one exists, its attributes are updated, so this method can be used for repair as well
         /// </summary>
@@ -32,13 +32,13 @@ namespace Netric.Configuration.Profilee
             _logger = logger;
             _manager = new ServerManager();
         }
-        
-        public string GetAllSites()
+
+        public List<string> GetAllSites()
         {
-            throw new NotImplementedException();
+            return _manager.Sites.Select(x => x.Name).ToList();
         }
 
-        public string[] GetSitesWithInstalledApm()
+        public List<string> GetSitesWithInstalledApm()
         {
             var result = new List<string>();
             foreach (var site in _manager.Sites)
@@ -49,7 +49,7 @@ namespace Netric.Configuration.Profilee
                 }
             }
 
-            return result.ToArray();
+            return result.ToList();
         }
 
         private bool ModuleExist(string siteName)
@@ -79,7 +79,7 @@ namespace Netric.Configuration.Profilee
         public void Install(string siteName)
         {
             try
-            {
+            {   
                 var site =
                     _manager.Sites.FirstOrDefault(
                         s => String.Equals(s.Name, siteName, StringComparison.InvariantCultureIgnoreCase));

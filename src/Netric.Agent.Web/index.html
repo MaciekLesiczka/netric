@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Netric</title>    
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+
+    <link href="dashboard.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                </button>
+                <a class="navbar-brand" href="#">Netric</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar">
+                <ul class="nav nav-sidebar">
+                    <li class="active"><a href="#">Settings <span class="sr-only">(current)</span></a></li>                    
+                </ul>                
+            </div>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                {% if model.completed == true %} 
+                    <div class="alert alert-success" role="alert"> <strong>Done.</strong> Settings has been updated. </div>
+                {% endif %}                
+                <h1 class="page-header">Settings</h1>               
+                <form action="/" method="POST">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="asmsInput">Assemblies to profile</label>
+                            <input name="assemblies" type="text" id="asmsInput" value="{{model.settings.assemblies}}" class="form-control" placeholder="Company.Product.Web;Company.Product.Feature1*;Company.Product.Feature2*">
+                            <small class="text-muted">
+                                Provide assembly names, without ".dll" suffix, separated by semicolon. You may use asterisk at the end to provide all assemblies with the same prefix. Changes made in this field requires IIS reset to be applied.
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label for="sitesSelect">IIS Sites</label>
+                            <select name="sites" id="sitesSelect" class="form-control" multiple>
+                                {% for item in model.settings.sites -%}
+                                <option {% if item.installed == true %} selected="" {% endif %}>{{ item.name }}</option>
+                                {% endfor -%}
+                            </select>
+                            <small class="text-muted">
+                                Select one or more sites to instrument. Changes here will cause application pool recycle automatically.
+                            </small>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </fieldset>
+                </form>                               
+            </div>
+        </div>
+    </div>
+
+    <script src="jquery.min.js"></script>    
+    <script src="bootstrap.min.js"></script>   
+</body>
+</html>
