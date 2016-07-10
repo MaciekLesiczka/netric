@@ -1,4 +1,5 @@
-﻿using Topshelf;
+﻿using Netric.Agent.Web;
+using Topshelf;
 
 namespace Netric.Agent.Service
 {
@@ -8,6 +9,8 @@ namespace Netric.Agent.Service
         {
             return (int)HostFactory.Run(x =>
             {
+                
+
                 x.SetServiceName("NetricAgent");
                 x.SetDisplayName("Netric Agent");
                 x.SetDescription("Netric Agent - service collecting website performance metrics");
@@ -15,6 +18,14 @@ namespace Netric.Agent.Service
                 x.RunAsLocalSystem();
                 x.StartAutomatically();                
                 x.Service<AgentService>();
+
+                x.Service<WebServer>(s =>
+                {
+                    s.ConstructUsing(name => new WebServer("http://localhost:8084"));
+                    s.WhenStarted(tc => tc.Start());
+                    s.WhenStopped(tc => tc.Stop());
+                });
+
                 x.EnableServiceRecovery(r => r.RestartService(1));
             });
         }
