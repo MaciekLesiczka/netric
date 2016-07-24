@@ -78,6 +78,10 @@ namespace Netric.Configuration.Profilee
 
         public void Install(string siteName)
         {
+            if (ModuleExist(siteName))
+            {
+                return;
+            }
             try
             {   
                 var site =
@@ -109,6 +113,10 @@ namespace Netric.Configuration.Profilee
 
         public void Uninstall(string siteName)
         {
+            if (!ModuleExist(siteName))
+            {
+                return;
+            }
             try
             {
                 RemoveFrom("system.webServer/modules", siteName, "Module");
