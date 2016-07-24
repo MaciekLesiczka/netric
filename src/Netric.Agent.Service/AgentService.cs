@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Akka.Actor;
+using Netric.Agent.Api;
 using Topshelf;
 using Netric.EventConsumer.Flamegraphs;
 
@@ -20,7 +21,7 @@ namespace Netric.Agent.Service
             var receiver = _agentSystem.ActorOf(Props.Create(() => new EtwEventProcessingActor(consumer)),"receiver");
             _ongoingTask = new Task(()=>new EventReceiver(receiver).Start());
             _ongoingTask.Start();
-            _webApp = Web.App.start();
+            _webApp = App.start();
             return true;
         }
 

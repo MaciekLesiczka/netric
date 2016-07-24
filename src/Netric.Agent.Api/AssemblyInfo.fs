@@ -1,10 +1,10 @@
-﻿namespace Netric.Agent.Web
+﻿namespace Netric.Agent.Api
 
 open System.Reflection
 open System.Runtime.CompilerServices
 open System.Runtime.InteropServices
 
-[<assembly: AssemblyTitle("Netric.Agent.Web")>]
+[<assembly: AssemblyTitle("Netric.Agent.Api")>]
 [<assembly: Guid("A09CD242-02F0-42FB-8E68-4F5BEA4E6A3C")>]
 
 

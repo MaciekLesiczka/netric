@@ -1,4 +1,4 @@
-﻿namespace Netric.Agent.Web
+﻿namespace Netric.Agent.Api
     open Suave
     open Suave.Files
     open Suave.Filters

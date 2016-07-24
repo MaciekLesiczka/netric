@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{530B3B
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "Netric.Installer", "Netric.Installer\Netric.Installer.wixproj", "{D38725C4-7CEC-4EC5-8A71-A92C0E7BFF39}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Netric.Agent.Web", "Netric.Agent.Web\Netric.Agent.Web.fsproj", "{2D62C23A-3847-47D3-8ECA-4E63DB434BA7}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Netric.Agent.Api", "Netric.Agent.Api\Netric.Agent.Api.fsproj", "{2D62C23A-3847-47D3-8ECA-4E63DB434BA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

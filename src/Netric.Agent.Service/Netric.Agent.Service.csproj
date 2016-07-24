@@ -64,9 +64,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Netric.Agent.Web\Netric.Agent.Web.fsproj">
+    <ProjectReference Include="..\Netric.Agent.Api\Netric.Agent.Api.fsproj">
       <Project>{2d62c23a-3847-47d3-8eca-4e63db434ba7}</Project>
-      <Name>Netric.Agent.Web</Name>
+      <Name>Netric.Agent.Api</Name>
     </ProjectReference>
     <ProjectReference Include="..\Netric.Agent\Netric.Agent.csproj">
       <Project>{8477aa8a-860c-4fce-988c-78591d285395}</Project>

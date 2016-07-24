@@ -1,4 +1,4 @@
-﻿open Netric.Agent.Web.App
+﻿open Netric.Agent.Api.App
 [<EntryPoint>]
 let main argv = 
     let cancel = start()
