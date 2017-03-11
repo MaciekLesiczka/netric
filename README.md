@@ -48,3 +48,9 @@ Run following command in root directory:
 ```
 build.bat
 ```
+
+Donations
+---------
+Donations are **greatly appreciated!**
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3TJSBKGZJ88L8&lc=PL&item_name=netric&item_number=netric_id&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
