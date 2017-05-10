@@ -116,7 +116,10 @@ namespace Netric.Configuration.Console
 
         public override void Execute()
         {
-            _clrConfigurator.SetProfiledAssemblies(_asm);
+            if (_clrConfigurator.SetProfiledAssemblies(_asm))
+            {
+                System.Console.WriteLine("Setting was changed. To apply changes, please reset IIS");
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Netric.Configuration.Console
         public override void Execute()
         {
             var installedOnSites = _profileeManager.GetSitesWithInstalledApm();
-            if (installedOnSites.Length > 0)
+            if (installedOnSites.Count > 0)
             {
                 System.Console.WriteLine("Sites with installed monitoring:");
                 foreach (var s in installedOnSites)

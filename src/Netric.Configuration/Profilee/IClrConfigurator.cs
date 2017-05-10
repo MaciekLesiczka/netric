@@ -7,7 +7,7 @@ namespace Netric.Configuration.Profilee
     public interface IClrConfigurator
     {
         string GetProfiledAssemblies();
-        void SetProfiledAssemblies(string asm);
+        bool SetProfiledAssemblies(string asm);
     }
 
     public class ClrConfigurator : IClrConfigurator
@@ -59,14 +59,11 @@ namespace Netric.Configuration.Profilee
             return result;
         }
 
-        public void SetProfiledAssemblies(string asm)
+        public bool SetProfiledAssemblies(string asm)
         {
-            if (SetProfiledAssemblies(asm, @"SYSTEM\CurrentControlSet\Services\W3SVC") &&
-
-                SetProfiledAssemblies(asm, @"SYSTEM\CurrentControlSet\Services\WAS"))
-            {
-                Log("Setting was changed. To apply changes, please reset IIS");
-            }
+            return string.Compare(GetProfiledAssemblies(),asm,StringComparison.InvariantCultureIgnoreCase)!=0 &&
+                SetProfiledAssemblies(asm, @"SYSTEM\CurrentControlSet\Services\W3SVC") &&
+                SetProfiledAssemblies(asm, @"SYSTEM\CurrentControlSet\Services\WAS");
         }
 
         private bool SetProfiledAssemblies(string asm, string serviceKey)

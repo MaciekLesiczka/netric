@@ -1,0 +1,22 @@
+{
+  "name": "Netric.Agent.App",
+  "version": "0.0.1",
+  "description": "Netric.Agent.App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@macieklesiczka",
+  "license": "GPL",
+  "dependencies": {
+    "es6-promise": "^3.2.1",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-router": "^2.6.0",
+    "whatwg-fetch": "^1.0.0"
+  },
+  "devDependencies": {
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.8.2"
+  }
+}
